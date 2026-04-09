@@ -115,7 +115,7 @@ export default function Navbar() {
             <ShoppingBag size={24} />
           </div>
           <div>
-            <p className="font-display text-lg font-semibold leading-none text-slate-950">College Commerce</p>
+            <p className="font-display text-lg font-semibold leading-none text-slate-950">CommerceHub</p>
             <p className="mt-1 text-xs uppercase tracking-[0.26em] text-slate-500">Campus reuse marketplace</p>
           </div>
         </Link>

@@ -28,7 +28,7 @@ export default function Home() {
               Buy smart, sell faster, and share campus resources beautifully.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-slate-300">
-              College Commerce helps students buy, sell, rent, and offer freelance services in one polished platform built for campus life.
+              CommerceHub helps students buy, sell, rent, and offer freelance services in one polished platform built for campus life.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link to="/products" className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-100">
