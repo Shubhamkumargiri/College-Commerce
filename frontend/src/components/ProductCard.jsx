@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Star } from 'lucide-react';
 import { discountPercent, formatCurrency } from '../lib/utils';
+import { PRODUCT_PLACEHOLDER_IMAGE, resolveBackendAssetUrl } from '../lib/urls';
 import ProfileAvatar from './ProfileAvatar';
 
 export default function ProductCard({ product }) {
   const discount = discountPercent(product.price, product.originalPrice);
-  const imageSrc = product.images?.[0] || 'https://via.placeholder.com/900x600?text=No+Image';
 
   return (
     <Link
@@ -14,9 +14,13 @@ export default function ProductCard({ product }) {
     >
       <div className="relative h-56 overflow-hidden">
         <img
-          src={imageSrc}
+          src={resolveBackendAssetUrl(product.images?.[0]) || PRODUCT_PLACEHOLDER_IMAGE}
           alt={product.title}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = PRODUCT_PLACEHOLDER_IMAGE;
+          }}
         />
         <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4">
           <span className="rounded-full bg-slate-950/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-white">

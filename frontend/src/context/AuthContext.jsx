@@ -90,8 +90,7 @@ export function AuthProvider({ children }) {
   async function register(payload) {
     setLoading(true);
     try {
-      const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
-      const { data } = await api.post('/auth/register', payload, isFormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : undefined);
+      const { data } = await api.post('/auth/register', payload);
       setUser(data);
       return { success: true, data };
     } catch (error) {
@@ -103,8 +102,7 @@ export function AuthProvider({ children }) {
 
   async function updateProfile(payload) {
     try {
-      const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
-      const { data } = await api.put('/auth/profile', payload, isFormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : undefined);
+      const { data } = await api.put('/auth/profile', payload);
       setUser(data);
       return { success: true, data };
     } catch (error) {

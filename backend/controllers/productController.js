@@ -1,6 +1,6 @@
 const Product = require('../models/Product');
 const Review = require('../models/Review');
-const { buildPublicUploadUrl } = require('../utils/publicUrl');
+const { fileToDataUrl } = require('../utils/image');
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -144,7 +144,7 @@ const uploadProductImages = async (req, res) => {
       return res.status(400).json({ message: 'Please upload at least one image' });
     }
 
-    const images = req.files.map((file) => buildPublicUploadUrl(req, file.filename));
+    const images = req.files.map((file) => fileToDataUrl(file)).filter(Boolean);
     res.status(201).json({ images });
   } catch (error) {
     console.error(error);
