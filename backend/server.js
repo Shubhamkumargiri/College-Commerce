@@ -24,17 +24,12 @@ mongoose.connect(process.env.MONGO_URL || process.env.MONGODB_URI)
 
 const app = express();
 const server = http.createServer(app);
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map((item) => item.trim()) : true,
-  credentials: true,
-};
 
 // Configure Socket.io
 const io = new Server(server, {
   cors: {
-    origin: corsOptions.origin,
-    methods: ['GET', 'POST'],
-    credentials: true,
+    origin: '*',
+    methods: ['GET', 'POST']
   }
 });
 
@@ -63,7 +58,7 @@ io.on('connection', (socket) => {
 });
 
 // Middleware
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
