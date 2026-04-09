@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
 
     refreshNotifications();
 
-    const socketClient = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000');
+    const socketClient = io(import.meta.env.VITE_SOCKET_URL || '/_/backend');
     socketClient.emit('join_user', user._id);
     setSocket(socketClient);
 
