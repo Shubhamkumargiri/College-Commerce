@@ -1,0 +1,16 @@
+{
+  "name": "college-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "npm --prefix frontend run dev",
+    "backend": "npm --prefix backend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "test": "echo \"No root tests configured\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
