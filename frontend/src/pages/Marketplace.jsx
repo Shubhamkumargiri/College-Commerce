@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import SectionTitle from '../components/SectionTitle';
 import api from '../lib/api';
-import { toArray } from '../lib/collections';
 
 const initialFilters = {
   keyword: '',
@@ -36,7 +35,7 @@ export default function Marketplace() {
     ).toString();
 
     api.get(`/products?${params}`)
-      .then(({ data }) => setProducts(toArray(data)))
+      .then(({ data }) => setProducts(data))
       .catch((error) => console.error(error));
 
     setSearchParams(params, { replace: true });
@@ -84,7 +83,7 @@ export default function Marketplace() {
           description={`Showing ${products.length} active opportunities across the campus community.`}
         />
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {toArray(products).map((product) => <ProductCard key={product._id} product={product} />)}
+          {products.map((product) => <ProductCard key={product._id} product={product} />)}
         </div>
       </section>
     </div>

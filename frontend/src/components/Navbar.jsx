@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext';
 import { classNames } from '../lib/utils';
 import ProfileAvatar from './ProfileAvatar';
 import api from '../lib/api';
-import { toArray } from '../lib/collections';
 
 const navItems = [
   { to: '/', label: 'Home' },
@@ -51,7 +50,7 @@ export default function Navbar() {
     setSearchLoading(true);
     const timer = window.setTimeout(() => {
       api.get(`/products?keyword=${encodeURIComponent(query)}&sort=popular`)
-        .then(({ data }) => setSearchResults(toArray(data).slice(0, 6)))
+        .then(({ data }) => setSearchResults(data.slice(0, 6)))
         .catch((error) => console.error(error))
         .finally(() => setSearchLoading(false));
     }, 220);
@@ -63,7 +62,7 @@ export default function Navbar() {
     const query = searchTerm.trim().toLowerCase();
     if (!query) return [];
     const staticMatches = searchSuggestions.filter((item) => item.toLowerCase().includes(query));
-    const productMatches = toArray(searchResults).map((item) => item.title);
+    const productMatches = searchResults.map((item) => item.title);
     return Array.from(new Set([searchTerm.trim(), ...staticMatches, ...productMatches])).slice(0, 6);
   }, [searchResults, searchTerm]);
 
@@ -222,8 +221,8 @@ export default function Navbar() {
                     <span className="text-xs text-slate-500">{notifications.length} total</span>
                   </div>
                   <div className="max-h-80 space-y-3 overflow-auto">
-                    {toArray(notifications).length ? (
-                      toArray(notifications).slice(0, 6).map((item) => (
+                    {notifications.length ? (
+                      notifications.slice(0, 6).map((item) => (
                         <button
                           key={item._id}
                           onClick={() => {
