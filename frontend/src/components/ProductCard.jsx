@@ -5,6 +5,7 @@ import ProfileAvatar from './ProfileAvatar';
 
 export default function ProductCard({ product }) {
   const discount = discountPercent(product.price, product.originalPrice);
+  const imageSrc = product.images?.[0] || 'https://via.placeholder.com/900x600?text=No+Image';
 
   return (
     <Link
@@ -13,7 +14,7 @@ export default function ProductCard({ product }) {
     >
       <div className="relative h-56 overflow-hidden">
         <img
-          src={product.images?.[0]}
+          src={imageSrc}
           alt={product.title}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />

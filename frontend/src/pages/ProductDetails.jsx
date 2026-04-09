@@ -48,12 +48,13 @@ export default function ProductDetails() {
   }
 
   const isOwner = user?._id === product.seller?._id;
+  const imageSrc = product.images?.[0] || 'https://via.placeholder.com/1200x800?text=No+Image';
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
       <section className="space-y-6">
         <div className="overflow-hidden rounded-[36px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.09)]">
-          <img src={product.images?.[0]} alt={product.title} className="h-[420px] w-full object-cover" />
+          <img src={imageSrc} alt={product.title} className="h-[420px] w-full object-cover" />
         </div>
         <div className="rounded-[36px] border border-slate-200 bg-white/90 p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-600">{product.category}</p>

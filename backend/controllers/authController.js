@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { buildPublicUploadUrl } = require('../utils/publicUrl');
 
-const buildImageUrl = (req, filename) => `${req.protocol}://${req.get('host')}/uploads/${filename}`;
 const buildAvatarUrl = (name) => `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'User')}`;
 
 function resolveProfileImage(profileImage, name) {
@@ -43,7 +43,7 @@ const registerUser = async (req, res) => {
       campus,
       location,
       bio,
-      profileImage: req.file ? buildImageUrl(req, req.file.filename) : resolveProfileImage(profileImage, name),
+      profileImage: req.file ? buildPublicUploadUrl(req, req.file.filename) : resolveProfileImage(profileImage, name),
     });
 
     if (user) {
@@ -138,7 +138,7 @@ const updateUserProfile = async (req, res) => {
     user.bio = req.body.bio || user.bio;
 
     if (req.file) {
-      user.profileImage = buildImageUrl(req, req.file.filename);
+      user.profileImage = buildPublicUploadUrl(req, req.file.filename);
     } else if (req.body.profileImage !== undefined) {
       user.profileImage = req.body.profileImage || resolveProfileImage('', user.name);
     }
