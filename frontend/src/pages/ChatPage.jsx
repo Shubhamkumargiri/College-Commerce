@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../lib/api';
 import { formatDateTime } from './chatUtils';
 import ProfileAvatar from '../components/ProfileAvatar';
+import { toArray } from '../lib/collections';
 
 export default function ChatPage() {
   const { userId } = useParams();
@@ -46,9 +47,10 @@ export default function ChatPage() {
   async function loadConversations() {
     try {
       const { data } = await api.get('/messages');
-      setConversations(data);
-      if (!activeConversation && data[0]) {
-        openConversation(data[0].user._id);
+      const nextConversations = toArray(data);
+      setConversations(nextConversations);
+      if (!activeConversation && nextConversations[0]) {
+        openConversation(nextConversations[0].user._id);
       }
     } catch (error) {
       console.error(error);
@@ -58,7 +60,10 @@ export default function ChatPage() {
   async function openConversation(targetUserId) {
     try {
       const { data } = await api.get(`/messages/${targetUserId}`);
-      setActiveConversation(data);
+      setActiveConversation(data ? {
+        ...data,
+        messages: toArray(data.messages),
+      } : null);
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +72,7 @@ export default function ChatPage() {
   async function loadUsers() {
     try {
       const { data } = await api.get('/users');
-      setUsers(data);
+      setUsers(toArray(data));
     } catch (error) {
       console.error(error);
     }
@@ -96,8 +101,8 @@ export default function ChatPage() {
 
   const filteredUsers = useMemo(() => {
     const query = userSearch.trim().toLowerCase();
-    if (!query) return users;
-    return users.filter((item) => (
+    if (!query) return toArray(users);
+    return toArray(users).filter((item) => (
       item.name?.toLowerCase().includes(query)
       || item.email?.toLowerCase().includes(query)
       || item.campus?.toLowerCase().includes(query)
@@ -140,7 +145,7 @@ export default function ChatPage() {
 
         <div className="mt-6 space-y-3">
           <h2 className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">Recent chats</h2>
-          {conversations.map((item) => (
+          {toArray(conversations).map((item) => (
             <button key={item.user._id} onClick={() => openConversation(item.user._id)} className="flex w-full items-center gap-3 rounded-[24px] border border-slate-100 p-3 text-left transition hover:border-emerald-200 hover:bg-emerald-50">
               <ProfileAvatar user={item.user} size={48} fallbackClassName="bg-gradient-to-br from-slate-950 to-emerald-600" />
               <div className="min-w-0">
@@ -164,7 +169,7 @@ export default function ChatPage() {
             </div>
 
             <div className="flex-1 space-y-4 overflow-auto py-6">
-              {activeConversation.messages.map((message) => {
+              {toArray(activeConversation.messages).map((message) => {
                 const isOwn = message.sender?._id === user?._id;
                 return (
                   <div key={message._id} className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Users, Package, ShoppingCart, Star } from 'lucide-react';
 import api from '../lib/api';
 import { formatDate } from '../lib/utils';
+import { toArray } from '../lib/collections';
 
 export default function AdminDashboard() {
   const [dashboard, setDashboard] = useState(null);
@@ -20,8 +21,8 @@ export default function AdminDashboard() {
         api.get('/admin/listings'),
       ]);
       setDashboard(dashboardRes.data);
-      setUsers(usersRes.data);
-      setListings(listingsRes.data);
+      setUsers(toArray(usersRes.data));
+      setListings(toArray(listingsRes.data));
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +66,7 @@ export default function AdminDashboard() {
         <div className="rounded-[36px] border border-slate-200 bg-white/90 p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
           <h2 className="text-2xl font-semibold text-slate-950">Manage users</h2>
           <div className="mt-6 space-y-4">
-            {users.map((item) => (
+            {toArray(users).map((item) => (
               <div key={item._id} className="flex flex-col gap-4 rounded-[24px] border border-slate-100 bg-slate-50 p-5 md:flex-row md:items-center md:justify-between">
                 <div>
                   <p className="font-semibold text-slate-950">{item.name}</p>
@@ -83,7 +84,7 @@ export default function AdminDashboard() {
         <div className="rounded-[36px] border border-slate-200 bg-white/90 p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
           <h2 className="text-2xl font-semibold text-slate-950">Moderate listings</h2>
           <div className="mt-6 space-y-4">
-            {listings.map((item) => (
+            {toArray(listings).map((item) => (
               <div key={item._id} className="flex flex-col gap-4 rounded-[24px] border border-slate-100 bg-slate-50 p-5 md:flex-row md:items-center md:justify-between">
                 <div>
                   <p className="font-semibold text-slate-950">{item.title}</p>

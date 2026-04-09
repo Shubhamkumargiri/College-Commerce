@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../lib/api';
 import { formatCurrency, formatDate } from '../lib/utils';
 import ProfileAvatar from '../components/ProfileAvatar';
+import { toArray } from '../lib/collections';
 
 export default function Profile() {
   const { user, updateProfile, notifications } = useAuth();
@@ -15,8 +16,8 @@ export default function Profile() {
   useEffect(() => {
     setFormData(user);
     setProfileImageFile(null);
-    api.get('/orders').then(({ data }) => setOrders(data)).catch(console.error);
-    api.get('/products').then(({ data }) => setProducts(data.filter((item) => item.seller?._id === user._id))).catch(console.error);
+    api.get('/orders').then(({ data }) => setOrders(toArray(data))).catch(console.error);
+    api.get('/products').then(({ data }) => setProducts(toArray(data).filter((item) => item.seller?._id === user._id))).catch(console.error);
   }, [user]);
 
   async function handleSubmit(e) {
@@ -116,7 +117,7 @@ export default function Profile() {
           <div className="rounded-[36px] border border-slate-200 bg-white/90 p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
             <h2 className="text-2xl font-semibold text-slate-950">Order history</h2>
             <div className="mt-6 space-y-4">
-              {orders.map((order) => (
+              {toArray(orders).map((order) => (
                 <div key={order._id} className="flex flex-col gap-4 rounded-[24px] border border-slate-100 bg-slate-50 p-5 md:flex-row md:items-center md:justify-between">
                   <div>
                     <p className="font-semibold text-slate-950">{order.product?.title}</p>

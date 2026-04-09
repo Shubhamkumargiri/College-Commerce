@@ -4,17 +4,18 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import SectionTitle from '../components/SectionTitle';
 import api from '../lib/api';
+import { toArray } from '../lib/collections';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     api.get('/products?sort=popular')
-      .then(({ data }) => setProducts(data))
+      .then(({ data }) => setProducts(toArray(data)))
       .catch((error) => console.error(error));
   }, []);
 
-  const featured = products.slice(0, 4);
+  const featured = toArray(products).slice(0, 4);
   return (
     <div className="space-y-16 pb-14">
       <section className="relative overflow-hidden rounded-[40px] bg-slate-950 px-6 py-14 text-white shadow-[0_30px_120px_rgba(15,23,42,0.4)] sm:px-10 lg:px-14">
