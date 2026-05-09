@@ -38,7 +38,7 @@ const getProducts = async (req, res) => {
     if (req.query.discounted === 'true') {
       query.originalPrice = { $gt: 0 };
     }
-
+    
     let sortObj = { createdAt: -1 };
     if (req.query.sort === 'priceAsc') sortObj = { price: 1 };
     if (req.query.sort === 'priceDesc') sortObj = { price: -1 };
